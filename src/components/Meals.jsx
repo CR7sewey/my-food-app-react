@@ -1,6 +1,9 @@
+import { useGlobalContext } from "../context";
+
 const Meals = () => {
+    const context = useGlobalContext();
     return (
-        <h1>Meals COmponent</h1>
+        <h1>Meals COmponent - {context}</h1>
     )
 }
 
