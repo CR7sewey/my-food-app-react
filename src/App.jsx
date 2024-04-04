@@ -13,7 +13,7 @@ function App() {
     <>
     <main>
     
-    {/*<Search />*/}
+    <Search />
     {/*<Favorites />*/}
     <Meals />
     {/*<Modal />*/}

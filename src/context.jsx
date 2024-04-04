@@ -3,39 +3,56 @@ import axios from 'axios';
 
 const AppContext = React.createContext();
 
-const allMealsURL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=a'
-const randomMealsURL = 'https://www.themealdb.com/api/json/v1/1/random.php'
+const allMealsURL = 'https://www.themealdb.com/api/json/v1/1/search.php?s='
+const randomMealUrl = 'https://www.themealdb.com/api/json/v1/1/random.php'
 
 const AppProvider = ({ children }) => {
 
     const [meals, setMeals] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const fetchMeals = async(url,searchTerm) => {
+        setLoading(true);
+        try {
+            const {data}= await axios(url.concat(searchTerm)); // return promise
+            if (data.meals ===  null) {
+                setMeals([]); // no data found !
+                setLoading(false);
+                return;
+            }
+            setMeals(data.meals);
+            
+        }
+        catch (error) {
+            console.log(error.response)
+        }
+        setLoading(false);
+    }
+
+    const fetchRandomMeal = () => {
+        fetchMeals(randomMealUrl,'')
+    }
+
+
     
     // nao podemos podr async na callback do useEffect!!
     useEffect(() => {
+        if (!searchTerm) return // resolve o porblema de quando se fe surprise e dps normal essa refeicap nao aparecer (pq fica com dois requests)
         // .then or async/await (fecth api ou axios)
-        const fetchMeals = async(url) => {
-            setLoading(true);
-            try {
-                const {data}= await axios(url); // return promise
-                if (data.meals ===  null) {
-                    setMeals([]); // no data found !
-                    setLoading(false);
-                    return;
-                }
-                setMeals(data.meals);
-                
-            }
-            catch (error) {
-                console.log(error.response)
-            }
-            setLoading(false);
-        }
-        fetchMeals(allMealsURL);
-    }, []);
+        console.log('AQUI2')
+        fetchMeals(allMealsURL, searchTerm);
+    }, [searchTerm]); // render every new ssearch term! 
+
+    // only when application restarts
+    useEffect(() => {
+        console.log('AQUI')
+        // .then or async/await (fecth api ou axios)
+        fetchMeals(allMealsURL,'');
+    }, []); // render every new ssearch term! 
 
     return (
-        <AppContext.Provider value={{meals, loading}} >
+        <AppContext.Provider value={{meals, loading, searchTerm, setSearchTerm, fetchRandomMeal}} >
             { children }
         </AppContext.Provider>
     )
