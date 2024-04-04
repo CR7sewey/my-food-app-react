@@ -1,30 +1,32 @@
 import React, { useContext, useEffect, useState } from "react";
+import axios from 'axios';
 
 const AppContext = React.createContext();
 
+const allMealsURL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=a'
+const randomMealsURL = 'https://www.themealdb.com/api/json/v1/1/random.php'
+
 const AppProvider = ({ children }) => {
 
-    const [receipts, setReceipts] = useState([]);
+    const [meals, setMeals] = useState([]);
     
     // nao podemos podr async na callback do useEffect!!
     useEffect(() => {
         // .then or async/await (fecth api ou axios)
-        const fetchData = async() => {
+        const fetchMeals = async(url) => {
             try {
-                const response = await fetch('https://randomuser.me/api/'); // return promise
-                const data = await response.json();
-                console.log(data)
-                return data
+                const {data}= await axios(url); // return promise
+                setMeals(data.meals);
             }
             catch (error) {
-                console.log(error)
+                console.log(error.response)
             }
         }
-        setReceipts(fetchData());
+        fetchMeals(allMealsURL);
     }, []);
 
     return (
-        <AppContext.Provider value="" >
+        <AppContext.Provider value={{meals}} >
             { children }
         </AppContext.Provider>
     )
