@@ -335,6 +335,20 @@ cursor:pointer;
   color:var(--black)
 }
 .close-btn{
-  background:var(--red-dark);
-  color:var(--white);
+  background: rgba(230, 65, 65, 0.614);
+  color:var(--red-dark);
+}
+
+.redirect-btn{
+  background: white;
+  color: blue;
+}
+
+.center-icons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
 }

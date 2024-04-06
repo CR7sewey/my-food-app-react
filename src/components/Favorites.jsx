@@ -1,6 +1,12 @@
 const Favorites = () => {
     return (
-        <h1>This will be Favorites</h1>
+        <section className="favorites">
+            <div className="favorites-content">
+                <h5>Favorites</h5>
+                <div>
+                </div>
+            </div>
+        </section>
     )
 }
 

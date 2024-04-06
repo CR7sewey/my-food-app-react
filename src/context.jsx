@@ -10,7 +10,13 @@ const AppProvider = ({ children }) => {
 
     const [meals, setMeals] = useState([]);
     const [loading, setLoading] = useState(true);
+    
     const [searchTerm, setSearchTerm] = useState('');
+    
+    const [showModal, setShowModal] = useState(false);
+    const [selectedMeal, setSelectedMeal] = useState(null);
+
+    //const [favorites, setFavorites] = useState([]);
 
     const fetchMeals = async(url,searchTerm) => {
         setLoading(true);
@@ -34,6 +40,20 @@ const AppProvider = ({ children }) => {
         fetchMeals(randomMealUrl,'')
     }
 
+    const selectMeal = (idMeal) => {
+        for (let m of meals) {
+            if (m.idMeal === idMeal) {
+                setSelectedMeal(m)
+                setShowModal(true);
+                return;
+            }
+        }
+      }
+
+    const closeModal = () => {
+        setSelectedMeal(null)
+        setShowModal(false);
+    }
 
     
     // nao podemos podr async na callback do useEffect!!
@@ -52,7 +72,10 @@ const AppProvider = ({ children }) => {
     }, []); // render every new ssearch term! 
 
     return (
-        <AppContext.Provider value={{meals, loading, searchTerm, setSearchTerm, fetchRandomMeal}} >
+        <AppContext.Provider value={{meals, loading, searchTerm, 
+        setSearchTerm, fetchRandomMeal, setShowModal, showModal,
+        setSelectedMeal, selectedMeal, selectMeal, closeModal,
+        setFavorites, favorites}} >
             { children }
         </AppContext.Provider>
     )
