@@ -16,7 +16,7 @@ const AppProvider = ({ children }) => {
     const [showModal, setShowModal] = useState(false);
     const [selectedMeal, setSelectedMeal] = useState(null);
 
-    //const [favorites, setFavorites] = useState([]);
+    const [favorites, setFavorites] = useState(JSON.parse(localStorage.getItem('favorites')) || []);
 
     const fetchMeals = async(url,searchTerm) => {
         setLoading(true);
@@ -50,6 +50,39 @@ const AppProvider = ({ children }) => {
         }
       }
 
+    const addToFavorites = (idMeal) => {
+        // check if meal already in favorites!
+        let exists = false;
+        favorites.forEach((favMeal) => {
+            if(favMeal.idMeal === idMeal) {
+                console.log('Already added!')
+                exists = true;
+            }
+        })
+        if (exists) {
+            return;
+        }     
+        // Add to meal
+        let meal;
+        for (let m of meals) {
+            if (m.idMeal === idMeal) {
+                meal = m;
+                break
+            }
+        }
+        const updatedFavorites = [...favorites, meal];
+        localStorage.setItem('favorites', JSON.stringify(updatedFavorites))
+        setFavorites(updatedFavorites)
+        
+        console.log(favorites,'aa')
+    }
+
+    const removeFavorites = (idMeal) => {
+        const updatedFavorites = favorites.filter((favs) => favs.idMeal !== idMeal)
+        setFavorites(updatedFavorites)
+        localStorage.setItem('favorites', JSON.stringify(updatedFavorites))
+    }
+
     const closeModal = () => {
         setSelectedMeal(null)
         setShowModal(false);
@@ -75,7 +108,7 @@ const AppProvider = ({ children }) => {
         <AppContext.Provider value={{meals, loading, searchTerm, 
         setSearchTerm, fetchRandomMeal, setShowModal, showModal,
         setSelectedMeal, selectedMeal, selectMeal, closeModal,
-        setFavorites, favorites}} >
+        addToFavorites, favorites, removeFavorites}} >
             { children }
         </AppContext.Provider>
     )

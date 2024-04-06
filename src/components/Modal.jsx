@@ -8,8 +8,8 @@ const Modal = () => {
     const { closeModal, selectedMeal} = useGlobalContext();
     
     
-        const { idMeal, strMeal: title, strMealThumb: image, strInstructions: description, strSource: source} = selectedMeal;
-        return (
+    const { idMeal, strMeal: title, strMealThumb: image, strInstructions: description, strSource: source} = selectedMeal;
+    return (
             <aside className='modal-overlay'>
                 <div className='modal-container'>
                 <img src={image} className="img img modal-img" />

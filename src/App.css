@@ -225,7 +225,7 @@ ul {
   color:var(--white);
     border:transparent;
   cursor:pointer;
-  font-size:0.5rem;
+  font-size:0.75rem;
   transition:var(--transition);
 }
 .remove-btn:hover{
